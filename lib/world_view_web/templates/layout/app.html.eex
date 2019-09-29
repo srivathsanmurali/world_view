@@ -14,8 +14,12 @@
     <header>
       <section class="container">
         <nav role="navigation">
-          <ul>
-            <li><a href="/login">Login</a></li>
+            <%= if logged_in?(@conn) do %>
+              <li>Hi, <%= current_user(@conn).username%></li>
+              <li><%= link "Logout", to: Routes.auth_path(@conn, :delete), method: :delete %></li>
+            <% else %>
+              <li><%= link "Login",    to: Routes.auth_path(@conn, :new) %></li>
+            <% end %>
           </ul>
         </nav><nav>
       <div class="nav-wrapper">

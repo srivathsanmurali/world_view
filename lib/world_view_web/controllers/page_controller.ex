@@ -1,6 +1,7 @@
 defmodule WorldViewWeb.PageController do
   use WorldViewWeb, :controller
   require Logger
+  alias WorldView.Auth
 
   def index(conn, _params) do
     redirect(conn,
@@ -16,7 +17,7 @@ defmodule WorldViewWeb.PageController do
       |> String.replace("_", " ")
       |> String.capitalize()
 
-    with {:ok, raw_path} <- find_page(slug, Map.get(conn.assigns, :is_dm, false)),
+    with {:ok, raw_path} <- find_page(slug, Auth.is_dm?(conn)),
          {:ok, body} <- File.read(raw_path),
          {:ok, html} <- render_html(body) do
       render(conn, "index.html", body: html, title: title)

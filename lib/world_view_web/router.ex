@@ -13,6 +13,14 @@ defmodule WorldViewWeb.Router do
     plug :accepts, ["json"]
   end
 
+  scope "/auth/", WorldViewWeb do
+    pipe_through :browser
+
+    get "/login", AuthController, :new
+    post "/login", AuthController, :create
+    delete "/login", AuthController, :delete
+  end
+
   scope "/", WorldViewWeb do
     pipe_through :browser
 

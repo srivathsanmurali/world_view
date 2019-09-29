@@ -42,6 +42,7 @@ defmodule WorldViewWeb do
       import WorldViewWeb.ErrorHelpers
       import WorldViewWeb.Gettext
       alias WorldViewWeb.Router.Helpers, as: Routes
+      import WorldView.Auth, only: [current_user: 1, logged_in?: 1]
     end
   end
 

@@ -37,7 +37,8 @@ defmodule WorldView.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:earmark, "~> 1.4"},
-      {:slugger, "~> 0.3.0"}
+      {:slugger, "~> 0.3.0"},
+      {:bcrypt_elixir, "~> 2.0"}
     ]
   end
 
