@@ -74,18 +74,15 @@ defmodule WorldViewWeb.PageController do
       x
       |> String.trim_leading("[[")
       |> String.trim_trailing("]]")
-      |> wiki_link_to_html()
+      |> wiki_link_to_url()
     end)
   end
 
-  defp wiki_link_to_html(link) do
+  defp wiki_link_to_url(link) do
     slug = Slugger.slugify_downcase(link, ?_)
 
-    path =
-      WorldViewWeb.Endpoint.url()
-      |> Path.join(slug)
-
-    ~s(<a href=#{path}>#{link}</a>)
+    WorldViewWeb.Endpoint.url()
+    |> Path.join(slug)
   end
 
   defp render_404(conn) do
