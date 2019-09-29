@@ -17,10 +17,6 @@ defmodule WorldViewWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    get "/:slug", PageController, :page
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", WorldViewWeb do
-  #   pipe_through :api
-  # end
 end
