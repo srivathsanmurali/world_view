@@ -3,7 +3,9 @@ defmodule WorldViewWeb.PageController do
   require Logger
 
   def index(conn, _params) do
-    redirect(conn, to: Routes.page_path(conn, :page, "index"))
+    redirect(conn,
+      to: Routes.page_path(conn, :page, Application.get_env(:world_view, :index_slug))
+    )
   end
 
   def page(conn, %{"slug" => slug}) do

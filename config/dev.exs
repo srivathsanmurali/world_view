@@ -76,4 +76,5 @@ config :phoenix, :stacktrace_depth, 20
 config :phoenix, :plug_init_mode, :runtime
 
 config :world_view,
-  raw_dir: "/home/sri/code/ryk/"
+  raw_dir: "/home/sri/code/ryk/",
+  index_slug: "ryk"
