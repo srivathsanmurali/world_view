@@ -40,6 +40,7 @@ defmodule WorldView.MixProject do
       {:slugger, "~> 0.3.0"}
     ]
   end
+
   defp aliases do
     [
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],

@@ -14,7 +14,7 @@ defmodule WorldViewWeb.Endpoint do
     from: :world_view,
     gzip: false,
     only: ~w(css fonts images js favicon.ico robots.txt)
-  
+
   plug Plug.Static,
     at: "/media",
     from: Application.get_env(:world_view, :raw_dir) |> Path.join("media"),
