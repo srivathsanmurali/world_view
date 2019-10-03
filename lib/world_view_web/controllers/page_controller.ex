@@ -49,7 +49,7 @@ defmodule WorldViewWeb.PageController do
 
   defp render_html(body, is_dm) do
     with lines = String.split(body, "\n"),
-         {:ok, lines} <- show_dm_notes(lines, is_dm) |> IO.inspect(),
+         {:ok, lines} <- show_dm_notes(lines, is_dm),
          {:ok, html, _} <- Earmark.as_html(lines),
          html = replace_wiki_links(html) do
       {:ok, html}
