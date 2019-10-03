@@ -17,9 +17,9 @@ defmodule WorldViewWeb.PageController do
       |> String.replace("_", " ")
       |> String.capitalize()
 
-    with {:ok, raw_path} <- find_page(slug, Auth.is_dm?(conn)),
+    with {:ok, raw_path} <- find_page(slug),
          {:ok, body} <- File.read(raw_path),
-         {:ok, html} <- render_html(body) do
+         {:ok, html} <- render_html(body, Auth.is_dm?(conn)) do
       render(conn, "index.html", body: html, title: title)
     else
       error ->
@@ -34,20 +34,7 @@ defmodule WorldViewWeb.PageController do
     end
   end
 
-  defp find_page(slug, true) do
-    raw_path =
-      Application.get_env(:world_view, :raw_dir)
-      |> Path.join(["dm_pages/", slug, ".md"])
-      |> Path.expand()
-
-    with true <- File.regular?(raw_path) do
-      {:ok, raw_path}
-    else
-      false -> find_page(slug, false)
-    end
-  end
-
-  defp find_page(slug, false) do
+  defp find_page(slug) do
     raw_path =
       Application.get_env(:world_view, :raw_dir)
       |> Path.join(["pages/", slug, ".md"])
@@ -60,12 +47,41 @@ defmodule WorldViewWeb.PageController do
     end
   end
 
-  defp render_html(body) do
-    with {:ok, html, _} <- Earmark.as_html(body),
+  defp render_html(body, is_dm) do
+    with lines = String.split(body, "\n"),
+         {:ok, lines} <- show_dm_notes(lines, is_dm) |> IO.inspect(),
+         {:ok, html, _} <- Earmark.as_html(lines),
          html = replace_wiki_links(html) do
       {:ok, html}
     else
       err -> err
+    end
+  end
+
+  defp show_dm_notes(lines, true) do
+    Enum.reject(lines, fn x ->
+      Regex.match?(~r/({{{ dm|}}})/, x)
+    end)
+    |> case do
+      [] -> {:error, "nothing to show"}
+      [""] -> {:error, "nothing to show"}
+      lines -> {:ok, lines}
+    end
+  end
+
+  defp show_dm_notes(lines, false) do
+    Enum.reduce(lines, {[], false}, fn line, {acc, dm_notes} ->
+      case {line, dm_notes} do
+        {"{{{ dm", _} -> {acc, true}
+        {"}}}", _} -> {acc, false}
+        {_line, true} -> {acc, true}
+        {line, false} -> {acc ++ [line], false}
+      end
+    end)
+    |> case do
+      {[], _} -> {:error, "nothing to show"}
+      {[""], _} -> {:error, "nothing to show"}
+      {lines, _} -> {:ok, lines}
     end
   end
 
