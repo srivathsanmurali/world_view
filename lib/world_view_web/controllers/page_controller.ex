@@ -10,14 +10,14 @@ defmodule WorldViewWeb.PageController do
   end
 
   def folder(conn, %{"folder" => folder, "slug" => slug}) do
-    render_slug("#{folder}/#{slug}")
+    render_slug(conn,"#{folder}/#{slug}")
   end
 
   def page(conn, %{"slug" => slug}) do
-    render_slug(slug)
+    render_slug(conn, slug)
   end
 
-  defp render_slug(slug) do
+  defp render_slug(conn, slug) do
     slug = Slugger.slugify_downcase(slug, ?_)
 
     title =
