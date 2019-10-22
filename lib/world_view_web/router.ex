@@ -26,5 +26,6 @@ defmodule WorldViewWeb.Router do
 
     get "/", PageController, :index
     get "/:slug", PageController, :page
+    get "/:folder/:page", PageController, :folder
   end
 end

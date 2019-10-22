@@ -9,7 +9,15 @@ defmodule WorldViewWeb.PageController do
     )
   end
 
+  def folder(conn, %{"folder" => folder, "slug" => slug}) do
+    render_slug("#{folder}/#{slug}")
+  end
+
   def page(conn, %{"slug" => slug}) do
+    render_slug(slug)
+  end
+
+  defp render_slug(slug) do
     slug = Slugger.slugify_downcase(slug, ?_)
 
     title =
@@ -33,7 +41,7 @@ defmodule WorldViewWeb.PageController do
         render_404(conn)
     end
   end
-
+  
   defp find_page(slug) do
     raw_path =
       Application.get_env(:world_view, :raw_dir)
