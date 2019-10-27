@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title><%= "#{Application.get_env(:world_view, :world_name)}" %></title>
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/milligram.css">
+  </head>
+  <body>
+    <header>
+      <section class="container">
+      <div class="nav-wrapper">
+        <a href="/" class="phx-logo">
+          <h1> World View </h1>
+        </a>
+      </section>
+    </header>
+    
+    <main role="main" class="container">
+      <h2>Login</h2>
+      <form accept-charset="UTF-8" action="/auth/login" method="post" name="auth">
+       <div class="form-group">
+         <label>Username</label>
+         <input class="form-control" id="username" name="username" type="text">
+       </div>
+     
+       <div class="form-group">
+         <label>Password</label>
+         <input class="form-control" id="password" name="password" type="password">
+       </div>
+
+        <div class="form-group">
+          <button class="btn btn-primary" type="submit">Login</button>
+        </div>
+      </form>
+    </main>
+  </body>
+</html>

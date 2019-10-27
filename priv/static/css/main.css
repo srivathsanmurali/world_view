@@ -1,0 +1,23 @@
+.nav {
+  display: flex;
+  align-items: center;
+  height: 100px;
+}
+
+.navlogo, .navopts {
+  flex: 1;
+}
+
+.navopts {
+  text-align: right;
+}
+
+.navopts a, .navopts span {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.navopts a {
+  margin-left: 50 px;
+  text-decoration: none;
+}

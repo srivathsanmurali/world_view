@@ -1,6 +1,8 @@
 defmodule WorldView.Router.Wiki do
   use Plug.Router
   require Logger
+  alias WorldView.Router.Auth
+
   plug(:match)
   plug(:dispatch)
 
@@ -9,10 +11,14 @@ defmodule WorldView.Router.Wiki do
     |> Enum.join("/")
     |> render_wiki(conn)
   end
-  
+
   @template_path :code.priv_dir(:world_view) |> Path.join("templates/wiki.html.eex")
-  
-  def render_wiki(slug, conn) do
+
+  def render_root(conn) do
+    render_wiki(Application.get_env(:world_view, :index_slug), conn)
+  end
+
+  defp render_wiki(slug, conn) do
     title =
       slug
       |> String.replace("_", " ")
@@ -24,8 +30,12 @@ defmodule WorldView.Router.Wiki do
       |> Path.expand()
 
     with {:ok, body} <- File.read(raw_path),
-         {:ok, html} <- render_html(body, false) do
-      html = EEx.eval_file(@template_path, assigns: [body: html, title: title])
+         {:ok, html} <- render_html(body, Auth.is_dm?(conn)) do
+      html =
+        EEx.eval_file(@template_path,
+          assigns: [body: html, title: title, current_user: Auth.current_user(conn)]
+        )
+
       conn
       |> Plug.Conn.resp(200, html)
       |> Plug.Conn.send_resp()
@@ -80,8 +90,9 @@ defmodule WorldView.Router.Wiki do
   end
 
   defp render_404(conn) do
-    html = "<h4><center>404<br>Looks like you rolled a natural 1 on your investigation.</center></h4>"
-    
+    html =
+      "<h4><center>404<br>Looks like you rolled a natural 1 on your investigation.</center></h4>"
+
     conn
     |> Plug.Conn.resp(404, html)
     |> Plug.Conn.send_resp()

@@ -11,16 +11,28 @@
     <% end %>
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
     <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/milligram.css">
   </head>
   <body>
     <header>
-      <section class="container">
-      <div class="nav-wrapper">
-        <a href="/" class="phx-logo">
-          <h1> World View </h1>
-        </a>
-      </section>
+      <div class="container">
+        <div class="nav">
+          <div class="navlogo">
+            <a href="/">
+              <h1> World View </h1>
+            </a>
+          </div>
+          <div clas="navopts">
+            <%= if not is_nil(assigns[:current_user]) do %>
+              <span>Hi, <%= assigns[:current_user].username %></span>
+              <a href="/auth/logout">Logout</a>
+            <% else %>
+              <a href="/auth/login">Login</a>
+            <% end %>
+          </div>
+        </div>
+      </div>
     </header>
     
     <main role="main" class="container">
