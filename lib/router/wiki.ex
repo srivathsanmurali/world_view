@@ -14,10 +14,6 @@ defmodule WorldView.Router.Wiki do
 
   @template_path :code.priv_dir(:world_view) |> Path.join("templates/wiki.html.eex")
 
-  def render_root(conn) do
-    render_wiki(Application.get_env(:world_view, :index_slug), conn)
-  end
-
   defp render_wiki(slug, conn) do
     title =
       slug

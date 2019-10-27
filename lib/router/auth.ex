@@ -23,7 +23,7 @@ defmodule WorldView.Router.Auth do
       {:ok, user} ->
         conn
         |> put_session(:current_user, user.id)
-        |> Wiki.render_root()
+        |> WorldView.Router.redirect_root()
       :error ->
         conn
         |> Plug.Conn.resp(200, EEx.eval_file(@login_path))
@@ -35,12 +35,12 @@ defmodule WorldView.Router.Auth do
     conn
     |> IO.inspect()
     |> delete_session(:current_user)
-    |> Wiki.render_root()
+    |> WorldView.Router.redirect_root()
   end
   
   match _ do
     conn
-    |> Wiki.render_root()
+    |> WorldView.Router.redirect_root()
   end
 
   def current_user(conn) do

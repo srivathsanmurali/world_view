@@ -1,7 +1,6 @@
 defmodule WorldView.Router do
   use Plug.Router
   require Logger
-  alias WorldView.Router.Wiki
 
   if Mix.env() == :dev do
     use Plug.Debugger
@@ -36,9 +35,22 @@ defmodule WorldView.Router do
   plug :fetch_session
   plug :dispatch
 
+  def redirect(conn, url) do
+    html = Plug.HTML.html_escape(url)
+    body = "<html><body>You are being <a href=\"#{html}\">redirected</a>.</body></html>"
+
+    conn
+    |> put_resp_header("location", url)
+    |> Plug.Conn.resp(conn.status || 302, body)
+    |> Plug.Conn.send_resp()
+  end
+  
+  def redirect_root(conn) do
+    redirect(conn, "/wiki/#{Application.get_env(:world_view, :index_slug)}")
+  end
 
   get "/" do
-    Wiki.render_root(conn)
+    redirect_root(conn)
   end
 
   forward("/wiki", to: WorldView.Router.Wiki)
