@@ -1,6 +1,7 @@
 defmodule WorldView.Router do
   use Plug.Router
   require Logger
+  @not_found_path :code.priv_dir(:world_view) |> Path.join("templates/404.html.eex")
 
   if Mix.env() == :dev do
     use Plug.Debugger
@@ -53,8 +54,21 @@ defmodule WorldView.Router do
     redirect_root(conn)
   end
 
+  get "/404" do
+    html =
+      EEx.eval_file(@not_found_path, assigns: [current_user: WorldView.Router.Auth.current_user(conn)])
+    
+    conn
+    |> Plug.Conn.resp(200, html)
+    |> Plug.Conn.send_resp()
+  end
+
   forward("/wiki", to: WorldView.Router.Wiki)
   forward("/auth", to: WorldView.Router.Auth)
+
+  match _ do
+    redirect(conn, "/404")
+  end
   
   defp put_secret_key_base(conn, _opts) do
     Map.put(conn, :secret_key_base, String.duplicate("CwDs5Ej6", 8))

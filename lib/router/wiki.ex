@@ -44,7 +44,7 @@ defmodule WorldView.Router.Wiki do
         )
         end)
 
-        render_404(conn)
+        WorldView.Router.redirect(conn, "/404")
     end
   end
 
@@ -83,15 +83,6 @@ defmodule WorldView.Router.Wiki do
       {[""], _} -> {:error, "nothing to show"}
       {lines, _} -> {:ok, lines}
     end
-  end
-
-  defp render_404(conn) do
-    html =
-      "<h4><center>404<br>Looks like you rolled a natural 1 on your investigation.</center></h4>"
-
-    conn
-    |> Plug.Conn.resp(404, html)
-    |> Plug.Conn.send_resp()
   end
 
   defp replace_wiki_links(html) do

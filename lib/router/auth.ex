@@ -39,8 +39,7 @@ defmodule WorldView.Router.Auth do
   end
   
   match _ do
-    conn
-    |> WorldView.Router.redirect_root()
+    WorldView.Router.redirect(conn, "/404")
   end
 
   def current_user(conn) do
