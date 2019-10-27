@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <%= if not is_nil(assigns[:title]) do %>
+      <title><%= "#{Application.get_env(:world_view, :world_name)} - #{assigns[:title]}"%></title>
+    <% else %>
+      <title><%= "#{Application.get_env(:world_view, :world_name)}" %></title>
+    <% end %>
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/milligram.css">
+  </head>
+  <body>
+    <header>
+      <section class="container">
+      <div class="nav-wrapper">
+        <a href="/" class="phx-logo">
+          <h1> World View </h1>
+        </a>
+      </section>
+    </header>
+    
+    <main role="main" class="container">
+      <%= EExHTML.raw(assigns[:body]) %>
+    </main>
+  </body>
+</html>

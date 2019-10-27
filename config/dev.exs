@@ -16,4 +16,5 @@ config :logger, :console, format: "[$level] $message\n"
 
 config :world_view,
   raw_dir: "/home/sri/code/ryk/",
-  index_slug: "ryk"
+  index_slug: "ryk",
+  world_name: "Ryk"

@@ -27,7 +27,6 @@ defmodule WorldView.MixProject do
       {:postgrex, "~> 0.14"},
       {:eex_html, "~> 1.0.0"},
       {:earmark, "~> 1.3"},
-      {:slugger, "~> 0.3.0"},
       {:bcrypt_elixir, "~> 2.0"},
 
     ]
